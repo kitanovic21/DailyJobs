@@ -1,0 +1,46 @@
+name: dailyjobs
+services:
+  db:
+    image: postgres:16
+    container_name: dailyjobs-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-dailyjobs}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dailyjobs}
+      POSTGRES_DB: ${DB_NAME:-dailyjobs}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dailyjobs-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      target: dev
+    container_name: dailyjobs-backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # unutar Dockera baza je servis "db" na portu 5432
+      DB_HOST: db
+      DB_PORT: 5432
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+        - action: rebuild
+          path: package.json
+
+volumes:
+  dailyjobs-data:
