@@ -1,6 +1,6 @@
 import {
   CreateDateColumn, Entity, Index, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn, Unique,
+  PrimaryGeneratedColumn, Unique, type Relation,
 } from 'typeorm';
 import { Job } from '../job/entities/job.entity.js'
 import { User } from '../user/entities/user.entity.js'
@@ -15,16 +15,16 @@ export class Conversation {
   id: string;
 
   @ManyToOne(() => Job, { nullable: false, onDelete: 'CASCADE' })
-  job: Job;
+  job: Relation<Job>;
 
   @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
-  employer: User;
+  employer: Relation<User>;
 
   @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
-  candidate: User;
+  candidate: Relation<User>;
 
   @OneToMany(() => Message, (message) => message.conversation)
-  messages: Message[];
+  messages: Relation<Message[]>;
 
   @CreateDateColumn()
   createdAt: Date;

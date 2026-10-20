@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-dailyjobs}
       POSTGRES_DB: ${DB_NAME:-dailyjobs}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - dailyjobs-data:/var/lib/postgresql/data
     healthcheck:

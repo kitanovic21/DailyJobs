@@ -4,6 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { ChatModule } from './chat/chat.module.js';
+import { UserModule } from './user/user.module.js';
+import { JobModule } from './job/job.module.js';
+import { ApplicationModule } from './application/application.module.js';
+import { User } from './user/entities/user.entity.js';
 
 @Module({
   imports: [
@@ -21,6 +25,9 @@ import { ChatModule } from './chat/chat.module.js';
         synchronize: true,
       }),
     }),
+        UserModule,
+        JobModule,
+        ApplicationModule,
         ChatModule,
   ],
   controllers: [AppController],

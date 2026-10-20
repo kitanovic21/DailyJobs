@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, type Relation } from "typeorm";
 import { Job } from '../../job/entities/job.entity.js'
 import { Application } from "../../application/entities/application.entity.js";
 
@@ -30,10 +30,10 @@ export class User {
     phone? : string;
 
     @OneToMany(() => Job, (job) => job.employer)
-    jobs : Job[]
+    jobs : Relation<Job[]>;
 
     @OneToMany(() => Application, (app) => app.applicant)
-    applications: Application[];
+    applications: Relation<Application[]>;
 
     @CreateDateColumn()
     createdAt : Date;

@@ -1,6 +1,6 @@
 import {
   Column, CreateDateColumn, Entity, Index, ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn, type Relation,
 } from 'typeorm';
 import { Conversation } from './conversation.entity.js';
 import { User } from '../user/entities/user.entity.js'
@@ -18,10 +18,10 @@ export class Message {
   readAt?: Date;
 
   @ManyToOne(() => Conversation, (c) => c.messages, { nullable: false, onDelete: 'CASCADE' })
-  conversation: Conversation;
+  conversation: Relation<Conversation>;
 
   @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
-  sender: User;
+  sender: Relation<User>;
 
   @CreateDateColumn()
   createdAt: Date;

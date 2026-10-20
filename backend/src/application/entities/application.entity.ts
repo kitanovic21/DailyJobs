@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, Unique, type Relation } from "typeorm";
 import { User } from '../../user/entities/user.entity.js'
 import { Job } from '../../job/entities/job.entity.js'
 
@@ -26,8 +26,8 @@ export class Application {
     note?: string;
 
     @ManyToOne(() => Job, (job) => job.applications, { nullable: false, onDelete: 'CASCADE' })
-    job: Job;
-    
+    job: Relation<Job>;
+
     @ManyToOne(() => User, (user) => user.applications, { nullable: false, onDelete: 'CASCADE' })
-    applicant: User;
+    applicant: Relation<User>;
 }

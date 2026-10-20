@@ -1,5 +1,5 @@
 import { ColdObservable } from "rxjs/internal/testing/ColdObservable";
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn, type Relation } from "typeorm";
 import { User } from '../../user/entities/user.entity.js'
 import { Application } from "../../application/entities/application.entity.js";
 
@@ -49,10 +49,10 @@ export class Job {
     workersNeeded: number;
 
     @ManyToOne(() => User, (user) => user.jobs, {nullable:false, onDelete: 'CASCADE'})
-    employer: User;
+    employer: Relation<User>;
 
     @OneToMany(() => Application, (app) => app.job)
-    applications: Application[];
+    applications: Relation<Application>[];
 
     @CreateDateColumn()
     createdAt : Date;
