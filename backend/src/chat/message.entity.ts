@@ -2,8 +2,8 @@ import {
   Column, CreateDateColumn, Entity, Index, ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Conversation } from '../../conversation/entities/conversation.entity.js';
-import { User } from '../../user/entities/user.entity.js'
+import { Conversation } from './conversation.entity.js';
+import { User } from '../user/entities/user.entity.js'
 
 @Entity('messages')
 @Index(['conversation', 'createdAt'])

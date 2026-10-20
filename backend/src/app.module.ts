@@ -3,8 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { ConversationModule } from './conversation/conversation.module.js';
-import { MessageModule } from './message/message.module.js';
+import { ChatModule } from './chat/chat.module.js';
 
 @Module({
   imports: [
@@ -22,8 +21,7 @@ import { MessageModule } from './message/message.module.js';
         synchronize: true,
       }),
     }),
-    ConversationModule,
-    MessageModule,
+        ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

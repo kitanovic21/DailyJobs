@@ -1,10 +1,10 @@
 import {
   CreateDateColumn, Entity, Index, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn, Relation, Unique,
+  PrimaryGeneratedColumn, Unique,
 } from 'typeorm';
-import { Job } from '../../job/entities/job.entity.js'
-import { User } from '../../user/entities/user.entity.js'
-import { Message } from '../../message/entities/message.entity.js'
+import { Job } from '../job/entities/job.entity.js'
+import { User } from '../user/entities/user.entity.js'
+import { Message } from './message.entity.js'
 
 @Entity('conversations')
 @Unique(['job', 'candidate'])
