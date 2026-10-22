@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module.js';
 import { JobModule } from './job/job.module.js';
 import { ApplicationModule } from './application/application.module.js';
 import { User } from './user/entities/user.entity.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { User } from './user/entities/user.entity.js';
         JobModule,
         ApplicationModule,
         ChatModule,
+        AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

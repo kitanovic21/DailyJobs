@@ -1,26 +1,51 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto.js';
-import { UpdateUserDto } from './dto/update-user.dto.js';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/user.dtos.js';
+import bcrypt from 'bcrypt';
+import { User } from './entities/user.entity.js';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User) private readonly repo: Repository<User>){}
+
+
+  async create(dto: CreateUserDto): Promise<User> {
+    if (await this.findByEmail(dto.email)) {
+      throw new ConflictException('Korisnik sa ovim emailom vec postoji');
+    }
+    const { password, ...rest } = dto;
+    const passwordHash = await bcrypt.hash(password, 10);
+    return this.repo.save(this.repo.create({ ...rest, passwordHash }));
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findById(id: string): Promise<User | null>{
+    return this.repo.findOneBy({id});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findByEmail(email: string): Promise<User | null>{
+    return this.repo.findOneBy({email});
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  findByEmailWithPassword(email: string):Promise<User | null>{
+    return this.repo
+      .createQueryBuilder('u')
+      .addSelect('u.passwordHash')
+      .where('u.email = :email',{email})
+      .getOne();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  findByIdWithRefreshHash(id : string):Promise<User | null>{
+    return this.repo
+      .createQueryBuilder('u')
+      .addSelect('u.refreshTokenHash')
+      .where('u.id =:id',{id})
+      .getOne();
+  }
+
+  setRefreshTokenHash(id : string, hash: string | null):Promise<UpdateResult>{
+    return this.repo.update(id ,{refreshTokenHash: hash});
   }
 }
